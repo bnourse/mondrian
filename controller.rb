@@ -24,6 +24,6 @@ options '/load' do
 end
 
 get("/load") do 
-	@save_json = ms.load_save_json("hardcoded")
+	@save_json = ms.load_save_json(params["save"])
 	erb :load
 end

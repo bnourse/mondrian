@@ -8,8 +8,9 @@ class MondrianServer
 		@load_data = {}
 	end
 
-	def save(data)		
-		@cfm.add_row_to_file(data)
+	def save(data)
+		timestamp = Time.now.to_i.to_s
+		@cfm.add_row_to_file(data,timestamp)
 	end
 
 	def load_save_json(savename) 
@@ -28,14 +29,14 @@ class CSVFileModifier
 		@csv_filename = filename
 	end
 
-	def add_row_to_file(row_hash)
-		csv_line = make_csv_line(row_hash)
+	def add_row_to_file(row_hash,savename)
+		csv_line = make_csv_line(row_hash,savename)
 		append_to_csv_file(csv_line)
 
 	end
 
-	def make_csv_line(row_hash)
-		@savename = "hardcoded"
+	def make_csv_line(row_hash,savename)
+		@savename = savename
 		output = "\"#{@savename}\","
 		output += "\"#{row_hash["row_1_box_1"]}\",\"#{row_hash["row_1_box_2"]}\",\"#{row_hash["row_1_box_3"]}\",\"#{row_hash["row_1_box_4"]}\","
 		output += "\"#{row_hash["row_2_box_1"]}\",\"#{row_hash["row_2_box_2"]}\",\"#{row_hash["row_2_box_3"]}\",\"#{row_hash["row_2_box_4"]}\","
