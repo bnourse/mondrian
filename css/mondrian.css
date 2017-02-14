@@ -230,3 +230,7 @@ footer a:visited {
 #save_button {
   border-left: 13px solid #ff9933; 
 }
+
+#load_button {
+  border-left: 13px solid purple; 
+}

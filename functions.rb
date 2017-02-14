@@ -1,12 +1,20 @@
+require "csv"
+
 class MondrianServer
 
 	def initialize
 		@cfm = CSVFileModifier.new
 		@save_data = {}
+		@load_data = {}
 	end
 
 	def save(data)		
 		@cfm.add_row_to_file(data)
+	end
+
+	def load_save_json(savename) 
+		save_hash = @cfm.get_row_from_file(savename)
+		return save_hash.to_json
 	end
 
 end
@@ -28,11 +36,11 @@ class CSVFileModifier
 
 	def make_csv_line(row_hash)
 		@savename = "hardcoded"
-		output = "#{@savename},"
-		output += "#{row_hash["row_1_box_1"]},#{row_hash["row_1_box_2"]},#{row_hash["row_1_box_3"]},#{row_hash["row_1_box_4"]},"
-		output += "#{row_hash["row_2_box_1"]},#{row_hash["row_2_box_2"]},#{row_hash["row_2_box_3"]},#{row_hash["row_2_box_4"]},"
-		output += "#{row_hash["row_3_box_1"]},#{row_hash["row_3_box_2"]},#{row_hash["row_3_box_3"]},#{row_hash["row_3_box_4"]},"
-		output += "#{row_hash["row_4_box_1"]},#{row_hash["row_4_box_2"]},#{row_hash["row_4_box_3"]},#{row_hash["row_4_box_4"]}\n"
+		output = "\"#{@savename}\","
+		output += "\"#{row_hash["row_1_box_1"]}\",\"#{row_hash["row_1_box_2"]}\",\"#{row_hash["row_1_box_3"]}\",\"#{row_hash["row_1_box_4"]}\","
+		output += "\"#{row_hash["row_2_box_1"]}\",\"#{row_hash["row_2_box_2"]}\",\"#{row_hash["row_2_box_3"]}\",\"#{row_hash["row_2_box_4"]}\","
+		output += "\"#{row_hash["row_3_box_1"]}\",\"#{row_hash["row_3_box_2"]}\",\"#{row_hash["row_3_box_3"]}\",\"#{row_hash["row_3_box_4"]}\","
+		output += "\"#{row_hash["row_4_box_1"]}\",\"#{row_hash["row_4_box_2"]}\",\"#{row_hash["row_4_box_3"]}\",\"#{row_hash["row_4_box_4"]}\"\n"
 		return output
 	end
 
@@ -42,4 +50,17 @@ class CSVFileModifier
 		end
 	end
 
+	def get_row_from_file(row_name)
+		saves_hash = load_saves_hash
+		return saves_hash[row_name]
+	end
+
+	def load_saves_hash
+		saves_hash = {}
+			CSV.foreach(@csv_filename, {headers: true, return_headers: false}) do |row|
+				savename = row["savename"];
+				saves_hash[savename] = row.to_hash
+			end
+		return saves_hash
+	end
 end

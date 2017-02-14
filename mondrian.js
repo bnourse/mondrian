@@ -1,12 +1,13 @@
 var current_color = "white";
 var save_data = {};
+var load_data;
 
 window.addEventListener("load", function() {
 
 	addPaletteListeners();
 	addSquareListeners();
 	addSaveListener();
-
+	addLoadListener();
 });
 
 function addPaletteListeners() {
@@ -40,6 +41,7 @@ function addSaveListener() {
 }
 
 function saveClicked(e) {
+	e.preventDefault();
 	var squares = document.getElementsByClassName("row");
 	for(i=0; i<squares.length; i++) {
 		var styles = window.getComputedStyle(squares[i], null);
@@ -50,10 +52,10 @@ function saveClicked(e) {
 }
 
 function sendSaveData() {
-	xhr = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
 	var url = "http://localhost:4567/save";
 	xhr.open("post", url, true);
-	//xhr.setRequestHeader("Content-type", "application/json");
+	// xhr.setRequestHeader("Content-type", "application/json");
 	// xhr.onreadystatechange = function () { 
 	//     if (xhr.readyState == 4 && xhr.status == 200) {
 	//         var json = JSON.parse(xhr.responseText);
@@ -62,4 +64,21 @@ function sendSaveData() {
 	// }
 	var data = JSON.stringify(save_data);
 	xhr.send(data);
+}
+
+function addLoadListener() {
+	document.getElementById("load_button").addEventListener("click", loadClicked)
+}
+
+function loadClicked(e) {
+	e.preventDefault();
+	var xhr2 = new XMLHttpRequest();
+	var url2 = "http://localhost:4567/load";
+	xhr2.open("get", url2, true);
+	// debugger;
+	xhr2.addEventListener("load", function () {
+		load_data = JSON.parse(xhr2.responseText);
+	});
+	xhr2.send();
+	debugger;
 }
