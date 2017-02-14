@@ -1,6 +1,7 @@
 var current_color = "white";
 var save_data = {};
-var test2 = '{"savename":"1487041591","row_1_box_1":"rgb(255, 255, 255)","row_1_box_2":"rgb(0, 0, 204)","row_1_box_3":"rgb(204, 0, 0)","row_1_box_4":"rgb(255, 255, 255)","row_2_box_1":"rgb(255, 236, 0)","row_2_box_2":"rgb(255, 255, 255)","row_2_box_3":"rgb(255, 255, 255)","row_2_box_4":"rgb(255, 255, 255)","row_3_box_1":"rgb(255, 255, 255)","row_3_box_2":"rgb(204, 0, 0)","row_3_box_3":"rgb(255, 255, 255)","row_3_box_4":"rgb(255, 255, 255)","row_4_box_1":"rgb(255, 255, 255)","row_4_box_2":"rgb(255, 255, 255)","row_4_box_3":"rgb(0, 0, 204)","row_4_box_4":"rgb(0, 0, 204)"}';
+//var test2 = '{"savename":"test2","row_1_box_1":"rgb(255, 255, 255)","row_1_box_2":"rgb(0, 0, 204)","row_1_box_3":"rgb(204, 0, 0)","row_1_box_4":"rgb(255, 255, 255)","row_2_box_1":"rgb(255, 236, 0)","row_2_box_2":"rgb(255, 255, 255)","row_2_box_3":"rgb(255, 255, 255)","row_2_box_4":"rgb(255, 255, 255)","row_3_box_1":"rgb(255, 255, 255)","row_3_box_2":"rgb(204, 0, 0)","row_3_box_3":"rgb(255, 255, 255)","row_3_box_4":"rgb(255, 255, 255)","row_4_box_1":"rgb(255, 255, 255)","row_4_box_2":"rgb(255, 255, 255)","row_4_box_3":"rgb(0, 0, 204)","row_4_box_4":"rgb(0, 0, 204)"}';
+var savenames = [];
 
 window.addEventListener("load", function() {
 
@@ -65,18 +66,38 @@ function addLoadListener() {
 
 function loadClicked(e) {
 	e.preventDefault();
-	// var xhr2 = new XMLHttpRequest();
-	// var url2 = "http://localhost:4567/load";
-	// xhr2.open("get", url2, true);
-	// xhr2.addEventListener("load", function () {
-	// 	load_data = JSON.parse(xhr2.responseText);
-	// });
-	// xhr2.send();
-	var load_data = JSON.parse(test2);
-	loadMondrian(load_data);
+	savename = getSaveToLoad();
+	loadAndDisplayMondrian(savename);
 }
 
-function loadMondrian(load_data) {
+function getSaveToLoad() {
+	// return "1487048257";
+	var xhr = new XMLHttpRequest();
+	var url = "http://localhost:4567/savelist"
+	xhr.open("get", url, true);
+	xhr.addEventListener("load", function () {
+		savelist = JSON.parse(xhr.responseText);
+		setSaveNames(savelist);
+	});
+	xhr.send();
+}
+
+function setSaveNames(savelist) {
+	savenames = savelist;
+}
+
+function loadAndDisplayMondrian(savename) {
+	var xhr = new XMLHttpRequest();
+	var url = "http://localhost:4567/load?save=" + savename;
+	xhr.open("get", url, true);
+	xhr.addEventListener("load", function () {
+		load_data = JSON.parse(xhr.responseText);
+		displayLoadedMondrian(load_data);
+	});
+	xhr.send();
+}
+
+function displayLoadedMondrian(load_data) {
 	var squares = document.getElementsByClassName("row");
 	for(i=0; i<squares.length; i++) {
 		square_id = squares[i].id

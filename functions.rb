@@ -18,6 +18,11 @@ class MondrianServer
 		return save_hash.to_json
 	end
 
+	def get_savelist
+		savenames = @cfm.load_saves_hash.keys
+		return savenames
+	end
+
 end
 
 class CSVFileModifier

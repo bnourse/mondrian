@@ -7,9 +7,15 @@ set :server, 'thin'
 
 ms = MondrianServer.new
 
+before do
+   content_type :json    
+   headers 'Access-Control-Allow-Origin' => '*', 
+           'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST'],
+           'Access-Control-Allow-Headers' => 'Content-Type'  
+end
+
 options("/save") do
-  response.headers["Access-Control-Allow-Origin"] = "*"
-  response.headers["Access-Control-Allow-Methods"] = "POST"
+	200
 end
 
 post("/save") do 
@@ -19,11 +25,19 @@ post("/save") do
 end
 
 options '/load' do
-  response.headers["Access-Control-Allow-Origin"] = "*"
-  response.headers["Access-Control-Allow-Methods"] = "GET"
+	200
 end
 
 get("/load") do 
 	@save_json = ms.load_save_json(params["save"])
 	erb :load
+end
+
+options '/savelist' do
+	200
+end
+
+get '/savelist' do
+	@savelist = ms.get_savelist.to_json
+	erb :savelist
 end
