@@ -1,7 +1,6 @@
 var current_color = "white";
 var save_data = {};
 //var test2 = '{"savename":"test2","row_1_box_1":"rgb(255, 255, 255)","row_1_box_2":"rgb(0, 0, 204)","row_1_box_3":"rgb(204, 0, 0)","row_1_box_4":"rgb(255, 255, 255)","row_2_box_1":"rgb(255, 236, 0)","row_2_box_2":"rgb(255, 255, 255)","row_2_box_3":"rgb(255, 255, 255)","row_2_box_4":"rgb(255, 255, 255)","row_3_box_1":"rgb(255, 255, 255)","row_3_box_2":"rgb(204, 0, 0)","row_3_box_3":"rgb(255, 255, 255)","row_3_box_4":"rgb(255, 255, 255)","row_4_box_1":"rgb(255, 255, 255)","row_4_box_2":"rgb(255, 255, 255)","row_4_box_3":"rgb(0, 0, 204)","row_4_box_4":"rgb(0, 0, 204)"}';
-var savenames = [];
 
 window.addEventListener("load", function() {
 
@@ -61,29 +60,39 @@ function sendSaveData() {
 }
 
 function addLoadListener() {
-	document.getElementById("load_button").addEventListener("click", loadClicked)
+	document.getElementById("load_button").addEventListener("click", getSaveToLoad)
 }
 
-function loadClicked(e) {
+// function loadClicked(e) {
+// 	e.preventDefault();
+// 	savename = getSaveToLoad();
+// 	debugger;
+	
+// }
+
+function getSaveToLoad(e) {
 	e.preventDefault();
-	savename = getSaveToLoad();
-	loadAndDisplayMondrian(savename);
-}
 
-function getSaveToLoad() {
-	// return "1487048257";
 	var xhr = new XMLHttpRequest();
 	var url = "http://localhost:4567/savelist"
 	xhr.open("get", url, true);
-	xhr.addEventListener("load", function () {
-		savelist = JSON.parse(xhr.responseText);
-		setSaveNames(savelist);
-	});
+	xhr.addEventListener("load", handleLoadResponse);
 	xhr.send();
+	// return "1487048257";
+	// debugger;
+	// return savenames;
 }
 
-function setSaveNames(savelist) {
-	savenames = savelist;
+function handleLoadResponse(e) {
+	savenames = JSON.parse(e.target.responseText);
+	pickSaveName(savenames);
+	debugger;
+	loadAndDisplayMondrian(n);
+	
+}
+
+function pickSaveName(savenames) {
+	
 }
 
 function loadAndDisplayMondrian(savename) {
