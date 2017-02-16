@@ -8,7 +8,10 @@ window.addEventListener("load", function() {
 	addSquareListeners();
 	addSaveListener();
 	addLoadListener();
+	addModalListeners();
 });
+
+
 
 function addPaletteListeners() {
 	palettes = document.getElementsByClassName("color");
@@ -63,13 +66,6 @@ function addLoadListener() {
 	document.getElementById("load_button").addEventListener("click", getSaveToLoad)
 }
 
-// function loadClicked(e) {
-// 	e.preventDefault();
-// 	savename = getSaveToLoad();
-// 	debugger;
-	
-// }
-
 function getSaveToLoad(e) {
 	e.preventDefault();
 
@@ -78,21 +74,43 @@ function getSaveToLoad(e) {
 	xhr.open("get", url, true);
 	xhr.addEventListener("load", handleLoadResponse);
 	xhr.send();
-	// return "1487048257";
-	// debugger;
-	// return savenames;
 }
 
 function handleLoadResponse(e) {
 	savenames = JSON.parse(e.target.responseText);
-	pickSaveName(savenames);
-	debugger;
-	loadAndDisplayMondrian(n);
-	
+	displaySaveList(savenames);
+	addSaveListListeners();
 }
 
-function pickSaveName(savenames) {
-	
+function displaySaveList(savenames) {
+	modal = document.getElementById("modal");
+	modal_body = document.getElementById("modal__body")
+	modal_body.innerHTML = getListHtml(savenames);
+
+	modal.style.display = "block"
+}
+
+function getListHtml(savenames) {
+	listHtml = "<ul> ";
+	for (i=0; i<savenames.length; i++) {
+		listHtml += "<li><a href=\"#\" class = \"savelist-item\">" + savenames[i] + "</a>  </li> ";
+	}
+	listHtml += "</ul> ";
+	return listHtml;
+}
+
+function addSaveListListeners() {
+	savelistItems = document.getElementsByClassName("savelist-item");
+	for (i=0;i<savelistItems.length;i++) {
+		savelistItems[i].addEventListener("click",savelistItemClicked);
+	}
+}
+
+function savelistItemClicked(e) {
+	e.preventDefault();
+	savename = e.target.innerText;
+	loadAndDisplayMondrian(savename);
+	document.getElementById("modal").style.display = "none";
 }
 
 function loadAndDisplayMondrian(savename) {
@@ -113,4 +131,22 @@ function displayLoadedMondrian(load_data) {
 		squares[i].style.backgroundColor = load_data[square_id];
 	}
 
+}
+
+function addModalListeners() {
+	modalClose = document.getElementById("modal__close");
+	modalClose.addEventListener("click", modalCloseClicked);
+
+	modalBackground = document.getElementById("modal");
+	modalBackground.addEventListener("click", modalBackgroundClicked);
+}
+
+function modalCloseClicked() {
+	document.getElementById("modal").style.display = "none";
+}
+
+function modalBackgroundClicked(e) {
+	if (e.target == this) {
+		document.getElementById("modal").style.display = "none";
+	}
 }
