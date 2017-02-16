@@ -235,6 +235,10 @@ footer a:visited {
   border-left: 13px solid purple; 
 }
 
+#reset_button {
+  border-left: 13px solid green; 
+}
+
 #modal{
   background: rgba(0,0,0,0.5);
   position: fixed;

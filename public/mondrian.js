@@ -9,6 +9,7 @@ window.addEventListener("load", function() {
 	addSaveListener();
 	addLoadListener();
 	addModalListeners();
+	addResetListener();
 });
 
 
@@ -150,3 +151,16 @@ function modalBackgroundClicked(e) {
 		document.getElementById("modal").style.display = "none";
 	}
 }
+
+function addResetListener () {
+	document.getElementById("reset_button").addEventListener("click", resetClicked);
+}
+
+function resetClicked (e) {
+	e.preventDefault();
+	var squares = document.getElementsByClassName("row");
+	for(i=0; i<squares.length; i++) {
+		squares[i].style.backgroundColor = "rgb(255, 255, 255)";
+	}
+}
+
