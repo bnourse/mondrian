@@ -2,16 +2,13 @@ var current_color = "white";
 var save_data = {};
 
 window.addEventListener("load", function() {
-
 	addPaletteListeners();
 	addSquareListeners();
+	addModalListeners();
 	addSaveListener();
 	addLoadListener();
-	addModalListeners();
 	addResetListener();
 });
-
-
 
 function addPaletteListeners() {
 	palettes = document.getElementsByClassName("color");
@@ -40,7 +37,7 @@ function squareClicked(e) {
 }
 
 function addSaveListener() {
-	document.getElementById("save_button").addEventListener("click", saveClicked)
+	document.getElementById("save_button").addEventListener("click", saveClicked);
 }
 
 function saveClicked(e) {
@@ -63,31 +60,29 @@ function sendSaveData() {
 }
 
 function addLoadListener() {
-	document.getElementById("load_button").addEventListener("click", getSaveToLoad)
+	document.getElementById("load_button").addEventListener("click", getSaveToLoad);
 }
 
 function getSaveToLoad(e) {
 	e.preventDefault();
-
 	var xhr = new XMLHttpRequest();
-	var url = "http://localhost:4567/savelist"
+	var url = "http://localhost:4567/savelist";
 	xhr.open("get", url, true);
-	xhr.addEventListener("load", handleLoadResponse);
+	xhr.addEventListener("load", handleSavelistLoad);
 	xhr.send();
 }
 
-function handleLoadResponse(e) {
+function handleSavelistLoad(e) {
 	savenames = JSON.parse(e.target.responseText);
-	displaySaveList(savenames);
-	addSaveListListeners();
+	displaySavelist(savenames);
+	addSavelistListeners();
 }
 
-function displaySaveList(savenames) {
+function displaySavelist(savenames) {
 	modal = document.getElementById("modal");
-	modal_body = document.getElementById("modal__body")
+	modal_body = document.getElementById("modal__body");
 	modal_body.innerHTML = getListHtml(savenames);
-
-	modal.style.display = "block"
+	modal.style.display = "block";
 }
 
 function getListHtml(savenames) {
@@ -99,7 +94,7 @@ function getListHtml(savenames) {
 	return listHtml;
 }
 
-function addSaveListListeners() {
+function addSavelistListeners() {
 	savelistItems = document.getElementsByClassName("savelist-item");
 	for (i=0;i<savelistItems.length;i++) {
 		savelistItems[i].addEventListener("click",savelistItemClicked);
@@ -127,10 +122,9 @@ function loadAndDisplayMondrian(savename) {
 function displayLoadedMondrian(load_data) {
 	var squares = document.getElementsByClassName("row");
 	for(i=0; i<squares.length; i++) {
-		square_id = squares[i].id
+		square_id = squares[i].id;
 		squares[i].style.backgroundColor = load_data[square_id];
 	}
-
 }
 
 function addModalListeners() {
