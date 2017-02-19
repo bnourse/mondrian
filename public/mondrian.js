@@ -88,7 +88,9 @@ function displaySavelist(savenames) {
 function getListHtml(savenames) {
 	listHtml = "<ul> ";
 	for (i=0; i<savenames.length; i++) {
-		listHtml += "<li><a href=\"#\" class = \"savelist-item\">" + savenames[i] + "</a>  </li> ";
+		listHtml += "<li><a href=\"#\" class = \"savelist-item\">" 
+		listHtml += savenames[i] 
+		listHtml += "</a>  </li> ";
 	}
 	listHtml += "</ul> ";
 	return listHtml;
