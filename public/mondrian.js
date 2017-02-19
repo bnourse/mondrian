@@ -1,6 +1,5 @@
 var current_color = "white";
 var save_data = {};
-//var test2 = '{"savename":"test2","row_1_box_1":"rgb(255, 255, 255)","row_1_box_2":"rgb(0, 0, 204)","row_1_box_3":"rgb(204, 0, 0)","row_1_box_4":"rgb(255, 255, 255)","row_2_box_1":"rgb(255, 236, 0)","row_2_box_2":"rgb(255, 255, 255)","row_2_box_3":"rgb(255, 255, 255)","row_2_box_4":"rgb(255, 255, 255)","row_3_box_1":"rgb(255, 255, 255)","row_3_box_2":"rgb(204, 0, 0)","row_3_box_3":"rgb(255, 255, 255)","row_3_box_4":"rgb(255, 255, 255)","row_4_box_1":"rgb(255, 255, 255)","row_4_box_2":"rgb(255, 255, 255)","row_4_box_3":"rgb(0, 0, 204)","row_4_box_4":"rgb(0, 0, 204)"}';
 
 window.addEventListener("load", function() {
 
@@ -139,14 +138,10 @@ function addModalListeners() {
 	modalClose.addEventListener("click", modalCloseClicked);
 
 	modalBackground = document.getElementById("modal");
-	modalBackground.addEventListener("click", modalBackgroundClicked);
+	modalBackground.addEventListener("click", modalCloseClicked);
 }
 
-function modalCloseClicked() {
-	document.getElementById("modal").style.display = "none";
-}
-
-function modalBackgroundClicked(e) {
+function modalCloseClicked(e) {
 	if (e.target == this) {
 		document.getElementById("modal").style.display = "none";
 	}
