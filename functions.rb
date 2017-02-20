@@ -5,8 +5,6 @@ class MondrianServer
 
 	def initialize
 		@cfm = CSVFileModifier.new
-		@save_data = {}
-		@load_data = {}
 	end
 
 	def save(data)
@@ -38,7 +36,6 @@ class CSVFileModifier
 	def add_row_to_file(row_hash,savename)
 		csv_line = make_csv_line(row_hash,savename)
 		append_to_csv_file(csv_line)
-
 	end
 
 	def make_csv_line(row_hash,savename)
@@ -65,7 +62,7 @@ class CSVFileModifier
 	def load_saves_hash
 		saves_hash = {}
 			CSV.foreach(@csv_filename, {headers: true, return_headers: false}) do |row|
-				savename = row["savename"];
+				savename = row["savename"]
 				saves_hash[savename] = row.to_hash
 			end
 		return saves_hash

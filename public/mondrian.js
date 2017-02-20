@@ -12,7 +12,6 @@ window.addEventListener("load", function() {
 
 function addPaletteListeners() {
 	palettes = document.getElementsByClassName("color");
-
 	for(i=0; i<palettes.length; i++) {
 		palettes[i].addEventListener("click", paletteClicked);
 	}
@@ -26,7 +25,6 @@ function paletteClicked(e) {
 
 function addSquareListeners() {
 	var squares = document.getElementsByClassName("row");
-
 	for(i=0; i<squares.length; i++) {
 		squares[i].addEventListener("click", squareClicked);
 	}
@@ -68,11 +66,11 @@ function getSaveToLoad(e) {
 	var xhr = new XMLHttpRequest();
 	var url = "http://localhost:4567/savelist";
 	xhr.open("get", url, true);
-	xhr.addEventListener("load", handleSavelistLoad);
+	xhr.addEventListener("load", savelistLoaded);
 	xhr.send();
 }
 
-function handleSavelistLoad(e) {
+function savelistLoaded(e) {
 	savenames = JSON.parse(e.target.responseText);
 	displaySavelist(savenames);
 	addSavelistListeners();
@@ -114,11 +112,13 @@ function loadAndDisplayMondrian(savename) {
 	var xhr = new XMLHttpRequest();
 	var url = "http://localhost:4567/load?save=" + savename;
 	xhr.open("get", url, true);
-	xhr.addEventListener("load", function () {
-		load_data = JSON.parse(xhr.responseText);
-		displayLoadedMondrian(load_data);
-	});
+	xhr.addEventListener("load", loadLoaded);
 	xhr.send();
+}
+
+function loadLoaded(e) {
+	load_data = JSON.parse(e.target.responseText);
+	displayLoadedMondrian(load_data);
 }
 
 function displayLoadedMondrian(load_data) {
